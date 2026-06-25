@@ -74,7 +74,7 @@ export class UsersService {
     })
   }
 
-  async getProfilePicture(id: string): Promise<ProfilePictureFromPrisma> {
+  async getUserProfilePicture(id: string): Promise<ProfilePictureFromPrisma> {
     return await this.prisma.user.findUniqueOrThrow({
       where: { id },
       select: profilePictureSelect

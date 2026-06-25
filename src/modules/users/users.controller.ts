@@ -6,14 +6,18 @@ import {
   Get,
   Param,
   ParseUUIDPipe,
-  Post,
+  Patch,
+  Request,
 } from "@nestjs/common";
-import { CreateUserDto } from "./dto/create-user.dto";
 import { ApiResponse } from "../../common/interfaces/ApiResponse";
 import { UserSummary } from "./interfaces/UserSummary";
 import { UserResponse } from "./interfaces/UserResponse";
 import { UserMapper } from "./mappers/user.mapper";
-import { UpdateUserDto } from "./dto/update-user.dto";
+import type { AuthenticatedRequest } from "../../common/interfaces/AuthenticatedRequest";
+import { UpdateUsernameDto } from "./dto/UpdateUsername.dto";
+import { UpdateNameDto } from "./dto/UpdateName.dto";
+import { UpdateBioDto } from "./dto/UpdateBio.dto";
+import { UserProfilePicture } from "./interfaces/UserProfilePicture";
 
 @Controller("users")
 export class UsersController {
@@ -40,14 +44,61 @@ export class UsersController {
   }
 
   @Get(":id")
+  async getUserProfilePicture(
+    @Param("id", ParseUUIDPipe) id: string
+  ): Promise<ApiResponse<UserProfilePicture>> {
+    const userProfilePicture = await this.usersService.getUserProfilePicture(id);
+    return {
+      message: "Profile Picture successfully searched.",
+      data: userProfilePicture,
+    };
+  }
+
+  @Patch("username")
   async updateUsername(
-    @Param("id", ParseUUIDPipe) id: string,
-    @Body() updateUserDto: UpdateUserDto
+    @Request() req: AuthenticatedRequest,
+    @Body() updateUsernameDto: UpdateUsernameDto
   ): Promise<ApiResponse<{ username: string }>> {
-    const username = await this.usersService.updateUsername(id, updateUserDto.username);
+    const username = await this.usersService.updateUsername(
+      req.user.id, 
+      updateUsernameDto.username
+    );
+
     return {
       message: "Username successfully updated.",
-      data: UserMapper.toResponse(user),
+      data: username,
+    };
+  }
+
+  @Patch("name")
+  async updateName(
+    @Request() req: AuthenticatedRequest,
+    @Body() updateNameDto: UpdateNameDto
+  ): Promise<ApiResponse<{ name: string | null }>> {
+    const name = await this.usersService.updateName(
+      req.user.id, 
+      updateNameDto.name
+    );
+
+    return {
+      message: "Name successfully updated.",
+      data: name,
+    };
+  }
+
+  @Patch("bio")
+  async updateBio(
+    @Request() req: AuthenticatedRequest,
+    @Body() updateBioDto: UpdateBioDto
+  ): Promise<ApiResponse<{ bio: string | null }>> {
+    const bio = await this.usersService.updateBio(
+      req.user.id, 
+      updateBioDto.bio
+    );
+
+    return {
+      message: "Bio successfully updated.",
+      data: bio,
     };
   }
 
