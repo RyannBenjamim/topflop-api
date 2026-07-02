@@ -12,22 +12,34 @@ import {
   ReviewResponseFromPrisma,
   ReviewSummaryFromPrisma
 } from "./prisma/reviews.types";
-
+import { MoviesService } from "../movies/movies.service";
 
 @Injectable()
 export class ReviewsService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly moviesService: MoviesService
+  ) {}
 
   async create(
     authorId: string,
     createReviewDto: CreateReviewDto
   ): Promise<ReviewResponseFromPrisma> {
-    return this.prisma.review.create({
-      data: {
-        ...createReviewDto,
-        authorId,
-      },
-      select: reviewResponseSelect,
+    return await this.prisma.$transaction(async (tx) => {
+      const review = await tx.review.create({
+        data: {
+          ...createReviewDto,
+          authorId,
+        },
+        select: reviewResponseSelect,
+      });
+
+      await this.moviesService.upsertMetrics(
+        createReviewDto.movieTmdbId, 
+        createReviewDto.topPercentage
+      );
+
+      return review;
     });
   }
 
