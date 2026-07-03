@@ -1,98 +1,246 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# Plataforma de Rede Social para Análise de Filmes
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+Este projeto consiste em uma API desenvolvida com **NestJS** para uma plataforma social voltada à publicação de análises de filmes, interação entre usuários e construção de uma comunidade de cinéfilos.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+A aplicação foi projetada utilizando arquitetura modular, autenticação segura e banco de dados relacional, permitindo escalabilidade, organização e fácil manutenção.
 
-## Description
+---
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+# Principais funcionalidades
 
-## Project setup
+## Sistema de autenticação
 
-```bash
-$ npm install
-```
+Autenticação segura utilizando **JWT**, permitindo:
 
-## Compile and run the project
+- Cadastro de usuários
+- Login
+- Proteção de rotas privadas
+- Controle de permissões por papéis (USER e ADMIN)
 
-```bash
-# development
-$ npm run start
+---
 
-# watch mode
-$ npm run start:dev
+## Gerenciamento de usuários
 
-# production mode
-$ npm run start:prod
-```
+Os usuários podem:
 
-## Run tests
+- Criar perfil
+- Alterar informações pessoais
+- Definir foto de perfil
+- Escrever biografia
+- Confirmar endereço de email
 
-```bash
-# unit tests
-$ npm run test
+---
 
-# e2e tests
-$ npm run test:e2e
+## Sistema de avaliações de filmes
 
-# test coverage
-$ npm run test:cov
-```
+Cada usuário pode publicar apenas uma análise para cada filme.
 
-## Deployment
+As avaliações possuem:
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
+- Título
+- Conteúdo
+- Nota em porcentagem (Top %)
+- Data de criação
+- Data de atualização
 
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+Cada avaliação está vinculada a um filme através do **TMDB ID**, evitando duplicação de informações da API do TMDB.
 
-```bash
-$ npm install -g @nestjs/mau
-$ mau deploy
-```
+---
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+## Sistema de comentários
 
-## Resources
+As avaliações podem receber comentários de outros usuários.
 
-Check out a few resources that may come in handy when working with NestJS:
+Cada comentário possui:
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+- Autor
+- Conteúdo
+- Data de criação
+- Data de atualização
 
-## Support
+---
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+## Sistema de curtidas
 
-## Stay in touch
+A plataforma permite interação através de curtidas em:
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+- Avaliações
+- Comentários
 
-## License
+Cada usuário pode curtir apenas uma vez cada conteúdo.
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+---
+
+## Sistema de seguidores
+
+Os usuários podem seguir outros usuários para acompanhar suas publicações.
+
+O relacionamento é do tipo muitos-para-muitos, permitindo:
+
+- Lista de seguidores
+- Lista de pessoas seguidas
+
+---
+
+## Recuperação de senha
+
+Fluxo completo para redefinição de senha utilizando tokens temporários.
+
+O sistema utiliza **Resend + React Email** para automatizar todo o processo, incluindo:
+
+- Solicitação de recuperação de senha
+- Envio do email com link de redefinição
+- Geração de token temporário
+- Expiração automática do token
+- Validação do token
+- Redefinição segura da senha
+
+---
+
+## Verificação de email
+
+Após o cadastro, os usuários devem confirmar seu endereço de email antes da ativação da conta.
+
+O fluxo é realizado utilizando **Resend + React Email**, permitindo:
+
+- Envio automático do email de verificação
+- Geração de token único
+- Validação do token
+- Confirmação do endereço de email
+- Ativação da conta
+
+---
+
+## Redis para performance e escalabilidade
+
+A aplicação utiliza **Redis** para melhorar a performance e a escalabilidade da API, sendo empregado em funcionalidades como:
+
+- Cache de dados estratégicos
+- Rate Limiting
+- Controle de sessões
+- Armazenamento temporário de dados
+- Otimização de operações frequentes
+
+---
+
+# Tecnologias utilizadas
+
+- NestJS
+- TypeScript
+- PostgreSQL
+- Prisma ORM
+- JWT Authentication
+- Redis
+- Resend
+- React Email
+- Bcrypt
+- Class Validator
+- Class Transformer
+
+---
+
+# Caso de uso do projeto
+
+A proposta da aplicação é simular uma rede social voltada para cinéfilos, onde usuários podem compartilhar opiniões sobre filmes, interagir com outras pessoas e construir um histórico de avaliações.
+
+O sistema utiliza o **TMDB (The Movie Database)** como fonte de identificação dos filmes, mantendo apenas as informações necessárias para relacionamento das avaliações no banco de dados.
+
+---
+
+# Arquitetura do sistema
+
+A aplicação foi dividida em módulos independentes, seguindo os princípios de responsabilidade única e organização por domínio.
+
+## Módulos
+
+### 01 - AUTH
+
+Responsável por:
+
+- Login
+- Cadastro
+- JWT
+- Refresh de autenticação
+
+---
+
+### 02 - USERS
+
+Gerenciamento de usuários.
+
+- Perfil
+- Avatar
+- Biografia
+- Permissões
+
+---
+
+### 03 - MOVIES
+
+Gerenciamento dos filmes cadastrados na plataforma.
+
+- TMDB ID
+- Estatísticas
+- Quantidade de avaliações
+
+---
+
+### 04 - REVIEWS
+
+Responsável pelas avaliações dos filmes.
+
+- Publicação
+- Atualização
+- Exclusão
+- Consulta
+
+---
+
+### 05 - COMMENTS
+
+Comentários das avaliações.
+
+---
+
+### 06 - LIKES
+
+Curtidas de avaliações e comentários.
+
+---
+
+### 07 - FOLLOWS
+
+Relacionamento entre usuários.
+
+---
+
+### 08 - PASSWORD RESET
+
+Fluxo de recuperação de senha.
+
+---
+
+### 09 - EMAIL VERIFICATION
+
+Confirmação de email dos usuários.
+
+---
+
+# Arquitetura do banco de dados
+
+O banco de dados foi modelado utilizando **PostgreSQL** e **Prisma ORM**, contemplando autenticação, relacionamentos sociais, avaliações, comentários, curtidas, seguidores e gerenciamento de contas.
+
+### Esquema do Banco de Dados
+
+![Database Schema](./topflop_db_diagram.png)
+
+---
+
+# Objetivos do projeto
+
+- Demonstrar arquitetura modular utilizando NestJS
+- Aplicar boas práticas de desenvolvimento back-end
+- Utilizar relacionamentos complexos com Prisma ORM
+- Construir uma API REST escalável
+- Simular funcionalidades presentes em redes sociais modernas
+- Integrar dados externos através do TMDB
