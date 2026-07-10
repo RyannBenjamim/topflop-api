@@ -1,10 +1,16 @@
 import { Prisma } from "@prisma/client";
 
 import {
+  userResponseWithPasswordSelect,
   userResponseSelect,
   userSummarySelect,
   profilePictureSelect
 } from "./users.selects";
+
+export type UserResponseWithPasswordFromPrisma =
+  Prisma.UserGetPayload<{
+    select: typeof userResponseWithPasswordSelect;
+  }>;
 
 export type UserResponseFromPrisma =
   Prisma.UserGetPayload<{

@@ -1,9 +1,35 @@
-import { Controller, Get } from "@nestjs/common";
+import { Controller, Post, Body, Get, Query, HttpCode, HttpStatus } from '@nestjs/common';
+import { AuthService } from './auth.service';
+import { CreateUserDto } from '../users/dto/create-user.dto';
+import { Public } from './decorators/public.decorator'; 
+import { SigninDto } from './dto/signin.dto';
+import { ResendTokenDto } from './dto/resend-token.dto'; 
 
-@Controller('api/validate-token')
+@Public() 
+@Controller('auth')
 export class AuthController {
-  @Get()
-  async validateToken(): Promise<{ isAuthenticated: boolean }> { 
-    return { isAuthenticated: true }
+  constructor(private readonly authService: AuthService) {}
+
+  @Post('register')
+  async register(@Body() createUserDto: CreateUserDto) {
+    return this.authService.register(createUserDto);
+  }
+
+  @Post('signin')
+  @HttpCode(HttpStatus.OK) 
+  async signin(@Body() signinDto: SigninDto) {
+    return this.authService.signin(signinDto.email, signinDto.password);
+  }
+
+  @Get('verify-email')
+  async verifyEmail(@Query('token') token: string) {
+    return this.authService.verifyEmail(token);
+  }
+
+  @Post('resend-verification')
+  @HttpCode(HttpStatus.OK) 
+  async resendVerification(@Body() resendTokenDto: ResendTokenDto) {
+    await this.authService.sendNewToken(resendTokenDto.email);
+    return { message: 'Novo link de verificação enviado para o e-mail informado.' };
   }
 }

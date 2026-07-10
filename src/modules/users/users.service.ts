@@ -3,12 +3,14 @@ import { PrismaService } from "../../database/prisma.service";
 import { CreateUserDto } from "./dto/create-user.dto";
 
 import { 
+  userResponseWithPasswordSelect,
   userResponseSelect, 
   userSummarySelect, 
-  profilePictureSelect 
+  profilePictureSelect, 
 } from './prisma/users.selects'
 
 import {
+  UserResponseWithPasswordFromPrisma,
   UserResponseFromPrisma,
   UserSummaryFromPrisma,
   ProfilePictureFromPrisma
@@ -39,6 +41,24 @@ export class UsersService {
       where: { id },
       select: userResponseSelect
     });
+  }
+
+  async findOneByEmail(
+    email: string
+  ): Promise<UserResponseWithPasswordFromPrisma | null> {
+    return await this.prisma.user.findUnique({
+      where: { email },
+      select: userResponseWithPasswordSelect
+    })
+  }
+
+   async findOneByUsername(
+    username: string
+  ): Promise<UserResponseFromPrisma | null> {
+    return await this.prisma.user.findUnique({
+      where: { username },
+      select: userResponseSelect
+    })
   }
 
   async updateUsername(

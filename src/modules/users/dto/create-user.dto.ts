@@ -20,7 +20,7 @@ export class CreateUserDto {
 
   @IsString()
   @IsNotEmpty()
-  @MinLength(12)
+  @MinLength(6)
   password!: string
 
   @IsString()

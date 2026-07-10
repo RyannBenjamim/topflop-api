@@ -104,9 +104,9 @@ export class UsersController {
 
   @Delete(":id")
   async remove(
-    @Param("id", ParseUUIDPipe) id: string
+    @Request() req: AuthenticatedRequest,
   ): Promise<ApiResponse<UserResponse>> {
-    const deletedUser = await this.usersService.remove(id);
+    const deletedUser = await this.usersService.remove(req.user.id);
     return {
       message: "User successfully deleted.",
       data: UserMapper.toResponse(deletedUser),
