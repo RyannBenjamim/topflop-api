@@ -12,7 +12,7 @@ import {
   ReviewResponseFromPrisma,
   ReviewSummaryFromPrisma
 } from "./prisma/reviews.types";
-import { MoviesService } from "../movies/movies.service";
+import { MoviesService } from "../cinema/movies/movies.service";
 
 @Injectable()
 export class ReviewsService {

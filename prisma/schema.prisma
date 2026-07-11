@@ -43,6 +43,9 @@ model User {
   passwordTokens PasswordResetToken[]
   verifyTokens   EmailVerificationToken[]
 
+  watchlist        Watchlist[]
+  annualHighlights AnnualHighlight[]
+
   @@map("users")
 }
 
@@ -54,10 +57,13 @@ model Movie {
   topSum Int @default(0) @map("top_sum")
 
   createdAt DateTime @default(now()) @map("created_at")
-
   updatedAt DateTime @updatedAt @map("updated_at")
 
   reviews Review[]
+
+  watchlistedBy    Watchlist[]
+  topInHighlights  AnnualHighlight[] @relation("TopMovie")
+  flopInHighlights AnnualHighlight[] @relation("FlopMovie")
 
   @@map("movies")
 }
@@ -76,16 +82,13 @@ model Review {
   movieTmdbId Int @map("movie_tmdb_id")
 
   createdAt DateTime @default(now()) @map("created_at")
-
   updatedAt DateTime @updatedAt @map("updated_at")
 
-  author User @relation(fields: [authorId], references: [id])
-
-  movie Movie @relation(fields: [movieTmdbId], references: [tmdbId])
+  author User  @relation(fields: [authorId], references: [id])
+  movie  Movie @relation(fields: [movieTmdbId], references: [tmdbId])
 
   comments Comment[]
-
-  likes ReviewLike[]
+  likes    ReviewLike[]
 
   @@unique([authorId, movieTmdbId])
   @@map("reviews")
@@ -101,11 +104,9 @@ model Comment {
   reviewId String @map("review_id")
 
   createdAt DateTime @default(now()) @map("created_at")
-
   updatedAt DateTime @updatedAt @map("updated_at")
 
-  user User @relation(fields: [userId], references: [id])
-
+  user   User   @relation(fields: [userId], references: [id])
   review Review @relation(fields: [reviewId], references: [id])
 
   likes CommentLike[]
@@ -120,8 +121,7 @@ model ReviewLike {
 
   createdAt DateTime @default(now()) @map("created_at")
 
-  user User @relation(fields: [userId], references: [id])
-
+  user   User   @relation(fields: [userId], references: [id])
   review Review @relation(fields: [reviewId], references: [id])
 
   @@id([userId, reviewId])
@@ -135,8 +135,7 @@ model CommentLike {
 
   createdAt DateTime @default(now()) @map("created_at")
 
-  user User @relation(fields: [userId], references: [id])
-
+  user    User    @relation(fields: [userId], references: [id])
   comment Comment @relation(fields: [commentId], references: [id])
 
   @@id([userId, commentId])
@@ -150,8 +149,7 @@ model Follow {
 
   createdAt DateTime @default(now()) @map("created_at")
 
-  follower User @relation("UserFollowers", fields: [followerId], references: [id])
-
+  follower  User @relation("UserFollowers", fields: [followerId], references: [id])
   following User @relation("UserFollowing", fields: [followingId], references: [id])
 
   @@id([followerId, followingId])
@@ -188,4 +186,35 @@ model EmailVerificationToken {
   user User @relation(fields: [userId], references: [id])
 
   @@map("email_verification_tokens")
+}
+
+model Watchlist {
+  userId      String   @map("user_id")
+  movieTmdbId Int      @map("movie_tmdb_id")
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  user  User  @relation(fields: [userId], references: [id])
+  movie Movie @relation(fields: [movieTmdbId], references: [tmdbId])
+
+  @@id([userId, movieTmdbId])
+  @@map("watchlist")
+}
+
+model AnnualHighlight {
+  id     String @id @default(uuid())
+  userId String @map("user_id")
+  year   Int
+
+  topMovieId  Int? @map("top_movie_id")
+  flopMovieId Int? @map("flop_movie_id")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  user      User   @relation(fields: [userId], references: [id])
+  topMovie  Movie? @relation("TopMovie", fields: [topMovieId], references: [tmdbId])
+  flopMovie Movie? @relation("FlopMovie", fields: [flopMovieId], references: [tmdbId])
+
+  @@unique([userId, year])
+  @@map("annual_highlights")
 }

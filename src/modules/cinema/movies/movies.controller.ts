@@ -1,13 +1,11 @@
 import { MoviesService } from "./movies.service";
 import {
-  Body,
   Controller,
   Get,
   Param,
   ParseIntPipe,
-  Post,
 } from "@nestjs/common";
-import { ApiResponse } from "../../common/interfaces/ApiResponse";
+import { ApiResponse } from "../../../common/interfaces/ApiResponse";
 import { MovieResponse } from "./interfaces/MovieResponse";
 import { MovieMapper } from "./mappers/movie.mapper";
 

@@ -4,8 +4,11 @@ import { PrismaModule } from './database/prisma.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { UsersModule } from './modules/users/users.module';
 import { ReviewsModule } from './modules/reviews/reviews.module';
-import { MoviesModule } from './modules/movies/movies.module';
 import { MailModule } from './modules/mail/mail.module';
+import { CinemaModule } from './modules/cinema/cinema.module';
+import { FollowsModule } from './modules/follows/follows.module';
+import { CommentsModule } from './modules/comments/comments.module';
+import { LikesModule } from './modules/likes/likes.module';
 
 @Module({
   imports: [
@@ -17,7 +20,10 @@ import { MailModule } from './modules/mail/mail.module';
     MailModule,
     PrismaModule,
     ReviewsModule,
-    MoviesModule
+    CinemaModule,
+    FollowsModule,
+    CommentsModule,
+    LikesModule
   ],
 })
 export class AppModule {}
