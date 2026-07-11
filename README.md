@@ -82,6 +82,27 @@ O relacionamento é do tipo muitos-para-muitos, permitindo:
 
 ---
 
+## Lista de interesse (Watchlist)
+
+Permite ao usuário gerenciar os filmes que ele deseja assistir no futuro:
+
+- Adicionar filmes à lista através do TMDB ID
+- Listar todos os filmes salvos na watchlist do perfil
+- Remover filmes da lista de interesse
+- Restrição automática para evitar a duplicação do mesmo filme na lista do usuário
+
+---
+
+## Destaques anuais (Top & Flop do Ano)
+
+Uma funcionalidade inspirada nos "4 favoritos" do Letterbox, porém focada no desempenho anual:
+
+- O usuário pode definir o seu filme **"Top"** (Melhor do ano) e o seu filme **"Flop"** (Pior do ano)
+- Histórico controlado por ano (armazenado de forma inteira) calculado dinamicamente no serviço
+- Chave composta única que garante estritamente **apenas um registro de destaques por usuário a cada ano**
+
+---
+
 ## Recuperação de senha
 
 Fluxo completo para redefinição de senha utilizando tokens temporários.
@@ -149,7 +170,7 @@ O sistema utiliza o **TMDB (The Movie Database)** como fonte de identificação 
 
 # Arquitetura do sistema
 
-A aplicação foi dividida em módulos independentes, seguindo os princípios de responsabilidade única e organização por domínio.
+A aplicação foi dividida em módulos independentes, seguindo os princípios de responsabilidade única e organização por domínio (Subdomínios de Contexto).
 
 ## Módulos
 
@@ -175,13 +196,13 @@ Gerenciamento de usuários.
 
 ---
 
-### 03 - MOVIES
+### 03 - CINEMA (Domínio Agrupador)
 
-Gerenciamento dos filmes cadastrados na plataforma.
+Subdomínio que centraliza o catálogo de filmes e as interações diretas do perfil do usuário com as obras cinematográficas. Dividido em três submódulos internos:
 
-- TMDB ID
-- Estatísticas
-- Quantidade de avaliações
+- **Movies**: Gerenciamento dos filmes base na plataforma (TMDB ID, estatísticas e contagem de reviews).
+- **Watchlist**: Sistema de controle de filmes que o usuário salvou para assistir posteriormente.
+- **Highlights**: Lógica de definição e controle do Top e Flop anual de filmes de cada usuário.
 
 ---
 
@@ -228,7 +249,7 @@ Confirmação de email dos usuários.
 
 # Arquitetura do banco de dados
 
-O banco de dados foi modelado utilizando **PostgreSQL** e **Prisma ORM**, contemplando autenticação, relacionamentos sociais, avaliações, comentários, curtidas, seguidores e gerenciamento de contas.
+O banco de dados foi modelado utilizando **PostgreSQL** e **Prisma ORM**, contemplando autenticação, relacionamentos sociais, avaliações, comentários, curtidas, seguidores, listas de interesse e gerenciamento de contas.
 
 ### Esquema do Banco de Dados
 
